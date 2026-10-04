@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule: { interval: weekly }
+  - package-ecosystem: npm
+    directory: "/"
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 5
+  # Add once `uv init` has created scripts/py/pyproject.toml and uv.lock:
+  # - package-ecosystem: uv
+  #   directory: "/scripts/py"
+  #   schedule: { interval: weekly }

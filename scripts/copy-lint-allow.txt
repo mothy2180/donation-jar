@@ -1,0 +1,20 @@
+# copy-lint exemptions — reviewed entries only. Format: path|text
+# A banned-word hit in <path> is allowed when its full line contains <text>;
+# an empty <text> exempts the whole file. Add entries only after review, with a
+# comment saying why. Locale examples (add when the files exist):
+#   apps/web/src/locales/ms.json|"disallowedCauses.notice"
+#   apps/web/src/locales/en.json|"disallowedCauses.notice"
+#   apps/web/src/locales/ms.json|"jar.individual.notDeductible"
+#   apps/web/src/locales/en.json|"jar.individual.notDeductible"
+#   apps/web/src/locales/ms.json|"donate.tip.note"
+#   apps/web/src/locales/en.json|"donate.tip.note"
+#   apps/web/src/locales/ms.json|"donate.cover.note"
+#   apps/web/src/locales/en.json|"donate.cover.note"
+# The Beneficiary Agreement's prohibited-collections clause (published Markdown):
+#   apps/web/src/content/legal/ms/beneficiary-agreement.md|zakat, fitrah, fidyah atau kaffarah
+#   apps/web/src/content/legal/en/beneficiary-agreement.md|zakat, fitrah, fidyah or kaffarah
+# Code-only hits in scanned TypeScript, e.g. Curlec's payment method name:
+#   supabase/functions/send-email/index.ts|method === "wallet"
+
+# Internal checklist that has to discuss the banned wording (not published):
+docs/legal/README.md|

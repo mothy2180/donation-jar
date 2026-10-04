@@ -1,0 +1,6 @@
+# RFC 9116. Reset Expires to less than a year ahead at every deploy;
+# add a mailto: Contact and a Canonical line once the domain exists.
+Contact: https://github.com/mothy2180/donation-jar/security/advisories/new
+Expires: 2027-09-30T00:00:00.000Z
+Preferred-Languages: ms, en
+Policy: https://github.com/mothy2180/donation-jar/blob/main/SECURITY.md

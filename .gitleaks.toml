@@ -1,0 +1,46 @@
+# gitleaks configuration — runs in pre-commit and in CI over the full history.
+# Extends the default ruleset with the secret shapes this project handles.
+title = "donation-jar gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "supabase-secret-key"
+description = "Supabase secret (service-role) API key"
+regex = '''sb_secret_[A-Za-z0-9_-]{20,}'''
+keywords = ["sb_secret_"]
+
+[[rules]]
+id = "curlec-key-secret"
+description = "Razorpay Curlec key secret (basic-auth password)"
+regex = '''(?i)curlec[_-]?key[_-]?secret[ \t]*[:=][ \t]*['"]?[A-Za-z0-9]{16,}'''
+keywords = ["curlec_key_secret", "curlec-key-secret"]
+
+[[rules]]
+id = "curlec-webhook-secret"
+description = "Razorpay Curlec webhook secret"
+regex = '''(?i)curlec[_-]?webhook[_-]?secret(_previous)?[ \t]*[:=][ \t]*['"]?[A-Za-z0-9_-]{12,}'''
+keywords = ["curlec_webhook_secret", "curlec-webhook-secret"]
+
+[[rules]]
+id = "age-private-key"
+description = "age encryption private key"
+regex = '''AGE-SECRET-KEY-1[A-Z0-9]{58}'''
+keywords = ["AGE-SECRET-KEY-1"]
+
+[[rules]]
+id = "resend-api-key"
+description = "Resend API key"
+regex = '''\bre_[A-Za-z0-9][A-Za-z0-9_]{25,}\b'''
+keywords = ["re_"]
+
+[allowlist]
+description = "Placeholders only; never allowlist whole files"
+regexes = [
+  '''sb_secret_REPLACE_ME''',
+  '''CHANGE_ME''',
+  '''example\.com''',
+  '''1x0000000000000000000000000000000AA''',
+  '''1x00000000000000000000AA''',
+]

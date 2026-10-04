@@ -1,0 +1,31 @@
+name: nightly-backup (stub — dry-run against staging from M2; mandatory before go-live in M5)
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 18 * * *"   # 02:00 MYT nightly — uncomment when secrets exist
+
+permissions:
+  contents: read
+
+jobs:
+  pg-dump-encrypt-upload:
+    runs-on: ubuntu-latest
+    if: ${{ vars.BACKUPS_ENABLED == 'true' }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Plan (see PROJECT.md §10, item 9)
+        run: |
+          cat <<'TXT'
+          1. mkdir -p backups
+             supabase db dump --db-url "$BACKUP_DB_URL" --role-only              > backups/roles.sql
+             supabase db dump --db-url "$BACKUP_DB_URL"                          > backups/schema.sql
+             supabase db dump --db-url "$BACKUP_DB_URL" --data-only --use-copy   > backups/data.sql
+          2. Storage objects via rclone crypt, excluding the kyc-docs bucket entirely
+             (rclone --exclude "kyc-docs/**") — KYC documents are never backed up
+          3. tar + age -r "$AGE_RECIPIENT"  → backups/balang-YYYY-MM-DD.tar.age
+          4. upload to Backblaze B2 (lifecycle: 30 daily + 12 monthly); R2 after go-live
+          5. the monthly restore drill runs on the founder's machine in Malaysia — never on a runner
+          Secrets (GitHub encrypted, protected environment): BACKUP_DB_URL (read-only role via the pooler),
+          AGE_RECIPIENT (public key only — the age private key never enters GitHub), B2_KEY_ID, B2_APP_KEY.
+          TXT

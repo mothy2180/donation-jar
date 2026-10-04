@@ -1,0 +1,65 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scaffold-checks:
+    name: scaffold checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: copy-lint (banned regulatory wording in user-facing copy)
+        run: scripts/copy-lint.sh
+      - name: YAML parses
+        run: ruby -ryaml -e 'ARGV.each { |f| YAML.load_file(f); puts "ok #{f}" }' .github/workflows/*.yml .github/dependabot.yml .pre-commit-config.yaml pnpm-workspace.yaml
+      - name: required files present
+        run: |
+          for f in PROJECT.md README.md SECURITY.md LICENSE .gitignore .nvmrc docs/adr/0001-one-backend-supabase.md; do
+            test -f "$f" || { echo "missing $f"; exit 1; }
+          done
+
+  secret-scan:
+    name: gitleaks (full history, repo config)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        env:
+          GITLEAKS_VERSION: 8.30.1
+        run: |
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar -xz gitleaks
+          ./gitleaks git --redact --verbose .
+
+  # Enable in M0 once `supabase init` and the first migration exist.
+  # database-tests:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     TURNSTILE_SECRET: 1x0000000000000000000000000000000AA   # Cloudflare's always-pass test secret; needed once [auth.captcha] reads env(TURNSTILE_SECRET)
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #     - uses: supabase/setup-cli@v1
+  #       with: { version: latest }
+  #     - run: supabase start
+  #     - run: supabase db reset
+  #     - run: supabase test db
+  #
+  # Enable once apps/web exists and package.json has "packageManager" (README bootstrap).
+  # web-and-functions:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #     - uses: pnpm/action-setup@v4          # reads the pnpm version from package.json "packageManager"
+  #     - uses: actions/setup-node@v4
+  #       with: { node-version-file: .nvmrc, cache: pnpm }
+  #     - run: pnpm install --frozen-lockfile
+  #     - run: pnpm -r --if-present run lint && pnpm -r --if-present run typecheck && pnpm -r --if-present run test
+  #     - uses: denoland/setup-deno@v2
+  #     - run: deno check supabase/functions && deno test -A --permit-no-files supabase/functions

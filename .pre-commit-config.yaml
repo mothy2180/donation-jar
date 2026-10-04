@@ -1,0 +1,24 @@
+# Install once:  brew install pre-commit gitleaks   (see README)
+# Then:          pre-commit install
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=2048"]
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        exclude: '\.md$'
+  - repo: local
+    hooks:
+      - id: copy-lint
+        name: copy-lint (banned regulatory wording in user-facing copy)
+        entry: scripts/copy-lint.sh
+        language: script
+        pass_filenames: false

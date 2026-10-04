@@ -1,0 +1,17 @@
+{
+  "name": "balang-monorepo",
+  "private": true,
+  "description": "Balang (working name) \u2014 donation-transparency platform for Malaysia. See PROJECT.md.",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "copy-lint": "scripts/copy-lint.sh",
+    "dev": "echo 'Milestone 0: run `supabase start`, `supabase functions serve` and `pnpm --filter web dev` (see README)'"
+  },
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mothy2180/donation-jar.git"
+  }
+}

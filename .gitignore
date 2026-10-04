@@ -1,0 +1,55 @@
+# --- secrets & env (never commit) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.age
+*.p12
+supabase/.env*
+!supabase/.env.example
+apps/*/.env*
+!apps/*/.env.example
+
+# --- dependencies & build output ---
+node_modules/
+dist/
+build/
+.wrangler/
+.vite/
+coverage/
+*.tsbuildinfo
+
+# --- Supabase CLI local state ---
+supabase/.temp/
+supabase/.branches/
+supabase/functions/**/.deno/
+
+# --- Python (uv) ---
+scripts/py/.venv/
+__pycache__/
+*.pyc
+
+# --- backups / dumps (encrypted or not, never in git) ---
+backups/
+*.dump
+*.sql.gz
+/*.sql
+/*.tar
+
+# --- local secrets of other tools ---
+.dev.vars*
+!.dev.vars.example
+supabase/signing_keys.json
+*.jks
+*.keystore
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# --- Docker volumes if any helper compose appears later ---
+.docker-data/
