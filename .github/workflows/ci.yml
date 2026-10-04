@@ -13,7 +13,7 @@ jobs:
     name: scaffold checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: copy-lint (banned regulatory wording in user-facing copy)
         run: scripts/copy-lint.sh
       - name: YAML parses
@@ -29,7 +29,7 @@ jobs:
     name: gitleaks (full history, repo config)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: gitleaks
@@ -45,7 +45,7 @@ jobs:
   #   env:
   #     TURNSTILE_SECRET: 1x0000000000000000000000000000000AA   # Cloudflare's always-pass test secret; needed once [auth.captcha] reads env(TURNSTILE_SECRET)
   #   steps:
-  #     - uses: actions/checkout@v5
+  #     - uses: actions/checkout@v7
   #     - uses: supabase/setup-cli@v1
   #       with: { version: latest }
   #     - run: supabase start
@@ -56,7 +56,7 @@ jobs:
   # web-and-functions:
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v5
+  #     - uses: actions/checkout@v7
   #     - uses: pnpm/action-setup@v4          # reads the pnpm version from package.json "packageManager"
   #     - uses: actions/setup-node@v4
   #       with: { node-version-file: .nvmrc, cache: pnpm }
