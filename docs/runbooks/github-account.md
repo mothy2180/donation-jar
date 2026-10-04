@@ -77,4 +77,6 @@ GH_TOKEN="$(gh auth token --user mothy2180)" gh api repos/mothy2180/donation-jar
 GH_TOKEN="$(gh auth token --user mothy2180)" gh api repos/mothy2180/donation-jar --jq .security_and_analysis                     # secret scanning + push protection enabled
 # Only if the line above shows secret_scanning or secret_scanning_push_protection as "disabled":
 GH_TOKEN="$(gh auth token --user mothy2180)" gh api -X PATCH repos/mothy2180/donation-jar -f 'security_and_analysis[secret_scanning][status]=enabled' -f 'security_and_analysis[secret_scanning_push_protection][status]=enabled'
+GH_TOKEN="$(gh auth token --user mothy2180)" gh api -X PUT repos/mothy2180/donation-jar/vulnerability-alerts        # Dependabot alerts
+GH_TOKEN="$(gh auth token --user mothy2180)" gh api -X PUT repos/mothy2180/donation-jar/automated-security-fixes    # Dependabot security updates
 ```

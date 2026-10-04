@@ -17,7 +17,8 @@ jobs:
       - name: copy-lint (banned regulatory wording in user-facing copy)
         run: scripts/copy-lint.sh
       - name: YAML parses
-        run: ruby -ryaml -e 'ARGV.each { |f| YAML.load_file(f); puts "ok #{f}" }' .github/workflows/*.yml .github/dependabot.yml .pre-commit-config.yaml pnpm-workspace.yaml
+        run: |
+          ruby -ryaml -e 'ARGV.each { |f| YAML.load_file(f); puts "ok #{f}" }' .github/workflows/*.yml .github/dependabot.yml .pre-commit-config.yaml pnpm-workspace.yaml
       - name: required files present
         run: |
           for f in PROJECT.md README.md SECURITY.md LICENSE .gitignore .nvmrc docs/adr/0001-one-backend-supabase.md; do
