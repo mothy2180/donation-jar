@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ vars.BACKUPS_ENABLED == 'true' }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Plan (see PROJECT.md §10, item 9)
         run: |
           cat <<'TXT'
